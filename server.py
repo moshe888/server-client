@@ -5,7 +5,7 @@ import threading
 HOST = '127.0.0.1' 
 PORT = 8888
 ADDR = (HOST, PORT)
-SIZE = 1024
+SIZE = 2048
 FORMAT = "utf-8"
 SERVER_DATA= "server_data"
 
@@ -17,6 +17,8 @@ def handle_client(conn, addr):
         data = conn.recv(SIZE).decode(FORMAT)
         data = data.split("@")
         cmd = data[0]
+        
+        print("    CMD:", cmd)
 
         if cmd == "LIST":
             files = os.listdir(SERVER_DATA)
@@ -53,9 +55,27 @@ def handle_client(conn, addr):
 
             conn.send(send_data.encode(FORMAT))
 
+        elif cmd == "DOWNLOAD":
+            filename = data[1]
+            
+            send_data = "OK@"
+            
+            if filename not in os.listdir(SERVER_DATA):
+                send_data += "The file does not exist"
+            else:
+                with open(f"{SERVER_DATA}/{filename}", "r") as f:
+                    send_data += f.read()
+                    
+            conn.send(send_data.encode(FORMAT))    
+            
         elif cmd == "LOGOUT":
+            send_data = "DISCONNECTED@OK"
+            conn.send(send_data.encode(FORMAT))
             break
-       
+            
+        else:
+            send_data = "OK@Invalid cmd"
+            conn.send(send_data.encode(FORMAT))
             
 
     print(f"[DISCONNECTED] {addr} disconnected")
