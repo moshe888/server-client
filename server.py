@@ -58,13 +58,11 @@ def handle_client(conn, addr):
         elif cmd == "DOWNLOAD":
             filename = data[1]
             
-            send_data = "OK@"
-            
             if filename not in os.listdir(SERVER_DATA):
-                send_data += "The file does not exist"
+                send_data = "OK@The file does not exist"
             else:
                 with open(f"{SERVER_DATA}/{filename}", "r") as f:
-                    send_data += f.read()
+                    send_data = "FILE@ " + f.read()
                     
             conn.send(send_data.encode(FORMAT))    
             
@@ -88,6 +86,8 @@ def main():
     server.listen()
     print(f"[LISTENING] Server is listening on {HOST}:{PORT}.")
 
+    # conn, addr = server.accept()
+    # handle_client((conn, addr))
     while True:
         conn, addr = server.accept()
         thread = threading.Thread(target=handle_client, args=(conn, addr))

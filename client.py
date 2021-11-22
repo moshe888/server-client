@@ -18,8 +18,6 @@ def main():
     client.connect(ADDR)
     
     receive = True
-    
-    filename = ""
 
     while True:
         if receive:
@@ -32,6 +30,8 @@ def main():
             elif cmd == "OK":
                 print(f"{msg}")
             elif cmd == "FILE":
+                with open(f"downloaded_{filename}", "w") as f:
+                    f.write(msg)
                 
                 
         receive = True
