@@ -1,6 +1,6 @@
 import socket
 
-HOST =  "127.0.0.1"  
+HOST =  "127.0.0.1"#A  
 PORT = 8888
 ADDR = (HOST, PORT)
 FORMAT = "utf-8"
