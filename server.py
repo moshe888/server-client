@@ -2,12 +2,12 @@ import os
 import socket
 import threading
 
-HOST =  '127.0.0.1'  
+HOST = '127.0.0.1' 
 PORT = 8888
 ADDR = (HOST, PORT)
 SIZE = 1024
 FORMAT = "utf-8"
-SERVER_DATA  = "server_data"
+SERVER_DATA= "server_data"
 
 def handle_client(conn, addr):
     print(f"[NEW CONNECTION] {addr} connected.")
@@ -19,7 +19,6 @@ def handle_client(conn, addr):
         cmd = data[0]
 
         if cmd == "LIST":
-            print("fffffffffffffff")
             files = os.listdir(SERVER_DATA)
             send_data = "OK@"
 
@@ -54,6 +53,10 @@ def handle_client(conn, addr):
 
             conn.send(send_data.encode(FORMAT))
 
+        elif cmd == "LOGOUT":
+            break
+       
+            
 
     print(f"[DISCONNECTED] {addr} disconnected")
     conn.close()
