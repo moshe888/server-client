@@ -18,8 +18,7 @@ def handle_client(conn, addr):
         data = data.split("@")
         cmd = data[0]
         
-        print("    CMD:", cmd)
-
+ 
         if cmd == "LIST":
             files = os.listdir(SERVER_DATA)
             send_data = "OK@"
