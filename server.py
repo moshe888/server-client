@@ -21,6 +21,9 @@ def handle_client(conn, addr):
 =======
         
  
+<<<<<<< HEAD
+>>>>>>> ec8e941eadb483b38c9414f8e03c5a193da7a81a
+=======
 >>>>>>> ec8e941eadb483b38c9414f8e03c5a193da7a81a
         if cmd == "LIST":
             files = os.listdir(SERVER_DATA)
