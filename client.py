@@ -1,4 +1,4 @@
-import socket
+import socket#
 import sys
 
 HOST = "127.0.0.1"
@@ -20,14 +20,11 @@ def main():
     receive = True
 
     while True:
-        if receive:
-            data = client.recv(SIZE).decode(FORMAT)  # מקבל מידע דרך הסוקט בגודל סייז
-            cmd, msg = data.split("@")# ספליט מפצל את המחרוזת לפי הפרמטר (שטרודל) ומחזיר רשימה של החלקים
-            
-            if cmd == "DISCONNECTED":
-                print(f"[SERVER]: {msg}")
-                break
-            elif cmd == "OK":
+        if receive: 
+            data = client.recv(SIZE).decode(FORMAT)  
+            cmd, msg= data.split("@")
+             
+            if cmd == "OK":
                 print(f"{msg}")
             elif cmd == "FILE":
                 with open(f"downloaded_{filename}", "w") as f:
@@ -41,9 +38,7 @@ def main():
         cmd = data[0]
        
         if cmd == "LIST":
-            client.send(cmd.encode(FORMAT))  # הפונקציה סנד שולחת בסוקט את המחרוזת הנתונה
-        elif cmd == "DELETE":
-            client.send(f"{cmd}@{data[1]}".encode(FORMAT))
+            client.send(cmd.encode(FORMAT))  
         elif cmd == "UPLOAD":
             path = data[1]
 
@@ -53,8 +48,7 @@ def main():
             filename = path.split("/")[-1]
             send_data = f"{cmd}@{filename}@{text}"
             client.send(send_data.encode(FORMAT))
-        elif cmd == "LOGOUT":
-            client.send(cmd.encode(FORMAT))
+        
         elif cmd == "DOWNLOAD":
             filename = data[1]
             send_data = f"{cmd}@{filename}"

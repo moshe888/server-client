@@ -10,16 +10,18 @@ FORMAT = "utf-8"
 SERVER_DATA= "server_data"
 
 def handle_client(conn, addr):
-    print(f"[NEW CONNECTION] {addr} connected.")
     conn.send("OK@Welcome to the File Server.".encode(FORMAT))
 
     while True:
         data = conn.recv(SIZE).decode(FORMAT)
         data = data.split("@")
         cmd = data[0]
+<<<<<<< HEAD
+  
+=======
         
-        print("    CMD:", cmd)
-
+ 
+>>>>>>> ec8e941eadb483b38c9414f8e03c5a193da7a81a
         if cmd == "LIST":
             files = os.listdir(SERVER_DATA)
             send_data = "OK@"
@@ -39,21 +41,6 @@ def handle_client(conn, addr):
             send_data = "OK@File uploaded successfully."
             conn.send(send_data.encode(FORMAT))
 
-        elif cmd == "DELETE":
-            files = os.listdir(SERVER_DATA)
-            send_data = "OK@"
-            filename = data[1]
-
-            if len(files) == 0:
-                send_data += "The server directory is empty"
-            else:
-                if filename in files:
-                    os.system(f"rm {SERVER_DATA}/{filename}")
-                    send_data += "File deleted successfully."
-                else:
-                    send_data += "File not found."
-
-            conn.send(send_data.encode(FORMAT))
 
         elif cmd == "DOWNLOAD":
             filename = data[1]
@@ -65,19 +52,7 @@ def handle_client(conn, addr):
                     send_data = "FILE@ " + f.read()
                     
             conn.send(send_data.encode(FORMAT))    
-            
-        elif cmd == "LOGOUT":
-            send_data = "DISCONNECTED@OK"
-            conn.send(send_data.encode(FORMAT))
-            break
-            
-        else:
-            send_data = "OK@Invalid cmd"
-            conn.send(send_data.encode(FORMAT))
-            
-
-    print(f"[DISCONNECTED] {addr} disconnected")
-    conn.close()
+       
 
 def main():
     print("[STARTING] Server is starting")
@@ -86,13 +61,9 @@ def main():
     server.listen()
     print(f"[LISTENING] Server is listening on {HOST}:{PORT}.")
 
-    # conn, addr = server.accept()
-    # handle_client((conn, addr))
-    while True:
-        conn, addr = server.accept()
-        thread = threading.Thread(target=handle_client, args=(conn, addr))
-        thread.start()
-        print(f"[ACTIVE CONNECTIONS] {threading.activeCount() - 1}")
+    conn, addr = server.accept()
+    handle_client(conn, addr)
+    
 
 if __name__ == "__main__":
     main()
