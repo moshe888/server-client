@@ -1,4 +1,4 @@
-import socket#
+import socket
 import sys
 
 HOST = "127.0.0.1"
@@ -37,7 +37,17 @@ def main():
         data = data.split(" ")
         cmd = data[0]
        
-        if cmd == "LIST":
+        if cmd == "CHAT":
+            name = data[1]
+            client.send(cmd.encode(FORMAT))
+            while True:
+                message = client.recv(1024)
+                message = message.decode()
+                print(name, ":", message)
+                message = input(str("Me : "))
+              
+                client.send(message.encode())
+        elif cmd == "LIST":
             client.send(cmd.encode(FORMAT))  
         elif cmd == "UPLOAD":
             path = data[1]

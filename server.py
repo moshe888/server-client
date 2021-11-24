@@ -16,15 +16,7 @@ def handle_client(conn, addr):
         data = conn.recv(SIZE).decode(FORMAT)
         data = data.split("@")
         cmd = data[0]
-<<<<<<< HEAD
   
-=======
-        
- 
-<<<<<<< HEAD
->>>>>>> ec8e941eadb483b38c9414f8e03c5a193da7a81a
-=======
->>>>>>> ec8e941eadb483b38c9414f8e03c5a193da7a81a
         if cmd == "LIST":
             files = os.listdir(SERVER_DATA)
             send_data = "OK@"
@@ -47,14 +39,21 @@ def handle_client(conn, addr):
 
         elif cmd == "DOWNLOAD":
             filename = data[1]
-            
             if filename not in os.listdir(SERVER_DATA):
                 send_data = "OK@The file does not exist"
             else:
                 with open(f"{SERVER_DATA}/{filename}", "r") as f:
                     send_data = "FILE@ " + f.read()
                     
-            conn.send(send_data.encode(FORMAT))    
+            conn.send(send_data.encode(FORMAT))   
+        elif cmd == "CHAT":
+            while True:
+                message = input(str("Me : "))
+              
+                conn.send(message.encode())
+                message = conn.recv(1024)
+                message = message.decode()
+                print(cmd, ":", message)
        
 
 def main():
